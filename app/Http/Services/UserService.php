@@ -4,14 +4,12 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\UserRepository;
 use App\Jobs\ExportUserCsvJob;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserService
 {
-    public function __construct(private readonly UserRepository $userRepository)
-    {}
+    public function __construct(private readonly UserRepository $userRepository) {}
 
     public function index(array $data)
     {
@@ -45,6 +43,18 @@ class UserService
         return [
             'status' => 200,
             'message' => 'Exportando dados para o csv'
+        ];
+    }
+
+    public function exportPdf(array $data): array
+    {
+        $pdf = Pdf::loadView('pdf.users', ['users' => $this->userRepository->index($data)]);
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->save(storage_path('app/public/users.pdf'));
+
+        return [
+            'status' => 200,
+            'message' => 'Exportando dados para o pdf'
         ];
     }
 

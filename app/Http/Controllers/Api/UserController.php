@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         return response()->json(['data' => $this->userService->show($id)]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -63,6 +63,13 @@ class UserController extends Controller
     public function exportCsv(Request $request)
     {
         $response = $this->userService->exportCsv($request->all());
+
+        return response()->json(['message' => $response['message']], $response['status']);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $response = $this->userService->exportPdf($request->all());
 
         return response()->json(['message' => $response['message']], $response['status']);
     }
