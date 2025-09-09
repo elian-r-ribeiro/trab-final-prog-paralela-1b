@@ -4,20 +4,18 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserPdfCreated
+class UserPdfCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(private string $url)
     {
         //
     }
@@ -30,7 +28,19 @@ class UserPdfCreated
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new Channel('user.pdf'),
+        ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'user.pdf.created';
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'url' => $this->url
         ];
     }
 }

@@ -21,8 +21,9 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/users/export/csv', [UserController::class, 'exportCsv']);
 Route::get('/users/export/pdf', [UserController::class, 'exportPdf']);
+Route::apiResource('/users', UserController::class);
 
 Route::middleware(['auth:sanctum', 'user.type:admin'])->group(function () {
 
-    Route::apiResource('/users', UserController::class);
+    
 });

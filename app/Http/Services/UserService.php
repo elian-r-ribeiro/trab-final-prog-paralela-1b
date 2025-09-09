@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\UserRepository;
 use App\Jobs\ExportUserCsvJob;
+use App\Jobs\ExportUserPdfJob;
 use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -48,9 +49,7 @@ class UserService
 
     public function exportPdf(array $data): array
     {
-        $pdf = Pdf::loadView('pdf.users', ['users' => $this->userRepository->index($data)]);
-        $pdf->setPaper('A4', 'landscape');
-        $pdf->save(storage_path('app/public/users.pdf'));
+        dispatch(new ExportUserPdfJob($this->userRepository->index($data)));
 
         return [
             'status' => 200,

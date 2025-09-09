@@ -34,7 +34,8 @@
         <option value="100">100</option>
       </select>
       <button id="searchButton">buscar</button>
-      <button id="exportButton">exportar csv</button>
+      <button id="exportCsvButton">exportar csv</button>
+      <button id="exportPdfButton">exportar pdf</button>
     </div>
     <br>
     <table>
@@ -89,6 +90,13 @@
           `<p>Arquivo CSV criado: <a href="${e.url}" target="_blank">${e.url}</a></p>`;
       });
 
+    window.Echo.channel('user.pdf')
+        .listen('.user.pdf.created', (e) => {
+          console.log("Evento recebido:", e);
+          document.getElementById('output').innerHTML =
+            `<p>Arquivo PDF criado: <a href="${e.url}" target="_blank">${e.url}</a></p>`;
+        });
+
     async function loadUsers() {
       try {
         let url = "http://localhost:8010/users";
@@ -121,7 +129,7 @@
       }
     }
 
-    async function exportUsers() {
+    async function exportUsersToCsv() {
       try {
         let url = "http://localhost:8010/users/export/csv";
 
@@ -137,8 +145,25 @@
       }
     }
 
+    async function exportUsersToPdf() {
+      try {
+        let url = "http://localhost:8010/users/export/pdf";
+
+        let search = document.getElementById("search").value;
+        let status = document.getElementById("status").value;
+        let perPage = document.getElementById("perPage").value;
+
+        url += `?search=${search}&status=${status}&perPage=${perPage}`;
+
+        await fetch(url);
+      } catch (err) {
+        console.error("Erro ao exportar usuários", err);
+      }
+    }
+
     document.getElementById('searchButton').addEventListener('click', loadUsers);
-    document.getElementById('exportButton').addEventListener('click', exportUsers);
+    document.getElementById('exportCsvButton').addEventListener('click', exportUsersToCsv);
+    document.getElementById('exportPdfButton').addEventListener('click', exportUsersToPdf);
   </script>
 </body>
 
