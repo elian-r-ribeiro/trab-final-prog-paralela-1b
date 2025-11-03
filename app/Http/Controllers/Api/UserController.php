@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Http\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,22 +21,19 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json(['data' => $this->userService->index($request->all())]);
+        return UserResource::collection($this->userService->index($request->all()));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateUserRequest $request): JsonResponse
+    public function store(CreateUserRequest $request): UserResource
     {
         $data = $request->validated();
 
         $data['company_id'] = auth()->user()->company_id;
 
-        return response()->json([
-            'message' => 'Usuário criado com sucesso.',
-            'data' => $this->userService->store($data)
-        ], 201);
+        return new UserResource($this->userService->store($data));
     }
 
     /**
@@ -43,7 +41,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(['data' => $this->userService->find($id)]);
+        return new UserResource($this->userService->find($id));
     }
     
     /**
@@ -51,7 +49,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        return response()->json(['data' => $this->userService->update($request->validated(), $id)]);
+        return new UserResource($this->userService->update($request->validated(), $id));
     }
 
     /**

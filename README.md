@@ -127,3 +127,9 @@ php artisan make:job NomeDoJob
 ```bash
 php artisan make:event NomeDoEvent
 ```
+
+## Criar Resource
+
+```bash
+php artisan make:resource NomeDoResource
+```
