@@ -25,7 +25,8 @@ class CreateQuizRequest extends FormRequest
             'title' => 'required|min:3',
             'description' => 'required|min:10',
             'discipline_id' => 'required|exists:disciplines,id',
-            'image' => 'nullable|string'
+            'image' => 'nullable|string',
+            'type' => 'required|in:choice,descriptive'
         ];
     }
 

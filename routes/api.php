@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\DisciplineController;
+use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\UserController;
 use App\Jobs\TesteFila;
@@ -32,8 +33,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/users/export/csv', [UserController::class, 'exportCsv']);
     });
 
-    Route::middleware(['user.type:teacher, student'])->group(function () {
-        //;
+    Route::middleware(['user.type:admin,teacher,student'])->group(function () {
+        Route::apiResource('/feedbacks', FeedbackController::class);
     });
 
     Route::middleware(['user.type:teacher'])->group(function () {});

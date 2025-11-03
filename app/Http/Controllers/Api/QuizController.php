@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
+use App\Http\Resources\QuizResource;
 use App\Http\Services\QuizService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class QuizController extends Controller
 
     public function index(Request $request)
     {
-        return $this->quizService->index($request->all());
+        return QuizResource::collection($this->quizService->index($request->all()));
     }
 
     public function store(CreateQuizRequest $request): JsonResponse
@@ -36,7 +37,7 @@ class QuizController extends Controller
 
     public function show(string $id)
     {
-        return $this->quizService->show($id);
+        return new QuizResource($this->quizService->show($id));
     }
 
     public function destroy(string $id)
