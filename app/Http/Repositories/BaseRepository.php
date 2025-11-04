@@ -32,7 +32,7 @@ abstract class BaseRepository
         return $user->fresh();
     }
 
-    private function find(string $id)
+    public function find(string $id)
     {
         return $this->model->findOrFail($id);
     }
