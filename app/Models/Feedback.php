@@ -16,7 +16,7 @@ class Feedback extends Model
         'quiz_id'
     ];
 
-    public function quizz(): BelongsTo
+    public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);
     }

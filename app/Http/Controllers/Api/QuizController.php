@@ -26,7 +26,7 @@ class QuizController extends Controller
 
         return response()->json([
             'message' => 'Questão criada com sucesso.',
-            'data' =>  $this->quizService->store($data)
+            'data' =>  new QuizResource($this->quizService->store($data))
         ], 201);
     }
 

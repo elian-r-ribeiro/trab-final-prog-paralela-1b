@@ -24,7 +24,7 @@ class DisciplineController extends Controller
         $data['company_id'] = auth()->user()->company_id;
         $data['user_id'] = auth()->user()->id;
 
-        return $this->disciplineService->store($data);
+        return new DisciplineResource($this->disciplineService->store($data));
     }
 
     public function show(string $id)
@@ -34,7 +34,7 @@ class DisciplineController extends Controller
 
     public function update(Request $request, string $id)
     {
-        return new $this->disciplineService->update($request->all(), $id);
+        return new DisciplineResource($this->disciplineService->update($request->all(), $id));
     }
 
     public function destroy(string $id)
